@@ -12,6 +12,13 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Wraps the database file provided by sqlite and provides service methods
+ * for querying and updating track statistics.
+ *
+ * @since 2025-06-01
+ * @author scorbo2
+ */
 public class StatsDb {
 
     private static final Logger logger = Logger.getLogger(StatsDb.class.getName());
@@ -24,6 +31,13 @@ public class StatsDb {
         this(Version.APP_HOME);
     }
 
+    /**
+     * This constructor provided for test purposes - this allows
+     * you to override where the stats db lives, instead of assuming
+     * it's going to live in the app's home dir.
+     *
+     * @param appHomeDir The parent directory for the stats db file.
+     */
     public StatsDb(File appHomeDir) {
         this.APP_HOME = appHomeDir;
         initialize();
@@ -44,6 +58,12 @@ public class StatsDb {
         }
     }
 
+    /**
+     * Attempts to open the database file if it exists, or attempts to create
+     * it if it does not yet exist. It's possible that the sqlite jdbc driver
+     * can't be located, in which case database access isn't possible and this
+     * class effectively becomes one big no-op.
+     */
     public void initialize() {
         close();
         dbAvailable = true;
@@ -53,7 +73,7 @@ public class StatsDb {
             Class.forName("org.sqlite.JDBC");
         }
         catch (ClassNotFoundException ignored) {
-            logger.severe("SQLite not available");
+            logger.severe("SQLite not available - stats tracking disabled.");
             dbAvailable = false;
         }
 
@@ -65,6 +85,13 @@ public class StatsDb {
         }
     }
 
+    /**
+     * Returns the play count of the given track, or zero if
+     * the given track has never been seen by this StatsDb.
+     *
+     * @param trackFile The track in question.
+     * @return The play count on record for that track.
+     */
     public int getPlayCount(File trackFile) {
         if (! dbAvailable || conn == null) {
             return 0;
@@ -87,6 +114,13 @@ public class StatsDb {
         return 0;
     }
 
+    /**
+     * Used internally to determine if any stats have been tracked for the
+     * given track file.
+     *
+     * @param trackFile The track in question.
+     * @return True if there is a play count on record for that track.
+     */
     protected boolean hasPlayCount(File trackFile) {
         if (! dbAvailable || conn == null) {
             return false;
@@ -107,6 +141,13 @@ public class StatsDb {
         return result;
     }
 
+    /**
+     * Increments the play count, whatever it currently is, for the
+     * given track file. Will silently create an entry for the given
+     * track with a play count of 1 if it has never been seen before.
+     *
+     * @param trackFile The track in question.
+     */
     public void incrementPlayCount(File trackFile) {
         if (! dbAvailable || conn == null) {
             return;
@@ -136,6 +177,9 @@ public class StatsDb {
         }
     }
 
+    /**
+     * Removes all stats for all tracks.
+     */
     public void resetStats() {
         if (! dbAvailable || conn == null) {
             return;
@@ -151,6 +195,13 @@ public class StatsDb {
         }
     }
 
+    /**
+     * Invoked internally to open a sqlite connection to the given
+     * File, which is assumed to be an existing sqlite database.
+     *
+     * @param file The sqlite db file.
+     * @return A Connection object, or null if something goes wrong (details in log).
+     */
     private Connection getConnection(File file) {
         Connection conn = null;
         try {
@@ -163,6 +214,9 @@ public class StatsDb {
         return conn;
     }
 
+    /**
+     * Invoked internally to create the schema for a new tracking database.
+     */
     private void createDb() {
         if (! dbAvailable) {
             return;
