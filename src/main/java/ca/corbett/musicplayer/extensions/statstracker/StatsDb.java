@@ -136,6 +136,21 @@ public class StatsDb {
         }
     }
 
+    public void resetStats() {
+        if (! dbAvailable || conn == null) {
+            return;
+        }
+
+        try {
+            String sql = "delete from statstracker";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+        }
+        catch (SQLException sqe) {
+            logger.log(Level.SEVERE, "Problem updating stats db: "+sqe.getMessage(), sqe);
+        }
+    }
+
     private Connection getConnection(File file) {
         Connection conn = null;
         try {

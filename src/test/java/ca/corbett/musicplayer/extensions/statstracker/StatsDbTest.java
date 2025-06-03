@@ -47,4 +47,20 @@ class StatsDbTest {
         assertTrue(statsDb.hasPlayCount(new File("test")));
         assertEquals(2, playCount);
     }
+
+    @Test
+    public void testResetStats_notEmpty_shouldDeleteAll() {
+        // GIVEN a setup with some test data:
+        File test1 = new File("test1");
+        File test2 = new File("test2");
+        statsDb.incrementPlayCount(test1);
+        statsDb.incrementPlayCount(test2);
+
+        // WHEN we reset it:
+        statsDb.resetStats();
+
+        // THEN the data should be gone:
+        assertFalse(statsDb.hasPlayCount(test1));
+        assertFalse(statsDb.hasPlayCount(test2));
+    }
 }
