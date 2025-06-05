@@ -7,6 +7,7 @@ import ca.corbett.musicplayer.ui.AudioPanel;
 import ca.corbett.musicplayer.ui.AudioPanelListener;
 import ca.corbett.musicplayer.ui.VisualizationTrackInfo;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -56,5 +57,15 @@ public class StatsTrackerExtension extends MusicPlayerExtension implements Audio
 
     @Override
     public void audioLoaded(AudioPanel sourcePanel, VisualizationTrackInfo trackInfo) {
+    }
+
+    @Override
+    public boolean handleKeyEvent(KeyEvent keyEvent) {
+        if (keyEvent.isControlDown() && keyEvent.getKeyCode() == KeyEvent.VK_T) {
+            // TODO show top 10 dialog
+            return true;
+        }
+
+        return false;
     }
 }
