@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -177,6 +179,31 @@ public class StatsDb {
         }
     }
 
+    public List<Entry> getTop10() {
+        List<Entry> list = new ArrayList<>(10);
+        if (! dbAvailable || conn == null) {
+            return list;
+        }
+
+        try {
+            String sql = "select track,playcount from statstracker order by playcount desc limit 10";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                File trackFile = new File(rs.getString(1));
+                int playCount = rs.getInt(2);
+                list.add(new Entry(trackFile, playCount));
+            }
+            rs.close();
+            ps.close();
+        }
+        catch (SQLException sqe) {
+            logger.log(Level.SEVERE, "Problem querying stats db: "+sqe.getMessage(), sqe);
+        }
+
+        return list;
+    }
+
     /**
      * Removes all stats for all tracks.
      */
@@ -229,6 +256,16 @@ public class StatsDb {
         }
         catch (SQLException sqe) {
             logger.log(Level.SEVERE, "Unable to create stats tracker db.", sqe);
+        }
+    }
+
+    public static class Entry {
+        public final File trackFile;
+        public final int playCount;
+
+        public Entry(File trackFile, int playCount) {
+            this.trackFile = trackFile;
+            this.playCount = playCount;
         }
     }
 }

@@ -5,5 +5,8 @@
   "targetAppName": "MusicPlayer",
   "targetAppVersion": "2.5",
   "shortDescription": "Keeps track of statistics for tracks played",
-  "longDescription": "Check out the statistics dialog to see which tracks you play the most frequently!"
+  "longDescription": "Hit Ctrl+T to check out the statistics dialog to see which tracks you play the most frequently!",
+  "customFields": {
+    "Shortcut": "Ctrl+T"
+  }
 }

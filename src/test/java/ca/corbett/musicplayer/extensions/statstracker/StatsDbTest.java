@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,5 +63,48 @@ class StatsDbTest {
         // THEN the data should be gone:
         assertFalse(statsDb.hasPlayCount(test1));
         assertFalse(statsDb.hasPlayCount(test2));
+    }
+
+    @Test
+    public void testTop10_empty_shouldReturnEmptyList() {
+        // GIVEN a setup with zero data:
+
+        // WHEN we query it:
+        List<StatsDb.Entry> top10 = statsDb.getTop10();
+
+        // THEN it should be empty:
+        assertEquals(0, top10.size());
+    }
+
+    @Test
+    public void testTop10_withSmallDataSet_shouldReturnList() {
+        // GIVEN a setup with some data:
+        for (int i = 0; i < 5; i++) {
+            statsDb.incrementPlayCount(new File("test"+i));
+        }
+
+        // WHEN we query it:
+        List<StatsDb.Entry> top10 = statsDb.getTop10();
+
+        // THEN we should see a list with the expected size:
+        assertEquals(5, top10.size());
+    }
+
+    @Test
+    public void testTop10_withLargeDataSet_shouldReturnList() {
+        // GIVEN a setup with lots of data:
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j <= i; j++) {
+                statsDb.incrementPlayCount(new File("test"+i));
+            }
+        }
+
+        // WHEN we query it:
+        List<StatsDb.Entry> top10 = statsDb.getTop10();
+
+        // THEN we should see just the top 10 entries:
+        assertEquals(10, top10.size());
+        assertEquals("test99", top10.get(0).trackFile.getName());
+        assertEquals(100, top10.get(0).playCount);
     }
 }

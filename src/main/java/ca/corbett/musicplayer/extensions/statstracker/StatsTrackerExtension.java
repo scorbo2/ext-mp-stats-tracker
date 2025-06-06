@@ -1,10 +1,12 @@
 package ca.corbett.musicplayer.extensions.statstracker;
 
 import ca.corbett.extensions.AppExtensionInfo;
+import ca.corbett.extras.MessageUtil;
 import ca.corbett.extras.properties.AbstractProperty;
 import ca.corbett.musicplayer.extensions.MusicPlayerExtension;
 import ca.corbett.musicplayer.ui.AudioPanel;
 import ca.corbett.musicplayer.ui.AudioPanelListener;
+import ca.corbett.musicplayer.ui.MainWindow;
 import ca.corbett.musicplayer.ui.VisualizationTrackInfo;
 
 import java.awt.event.KeyEvent;
@@ -13,6 +15,8 @@ import java.util.logging.Logger;
 
 public class StatsTrackerExtension extends MusicPlayerExtension implements AudioPanelListener {
     private static final Logger log = Logger.getLogger(StatsTrackerExtension.class.getName());
+
+    private MessageUtil messageUtil;
 
     private final AppExtensionInfo extInfo;
     private StatsDb statsDb;
@@ -62,10 +66,22 @@ public class StatsTrackerExtension extends MusicPlayerExtension implements Audio
     @Override
     public boolean handleKeyEvent(KeyEvent keyEvent) {
         if (keyEvent.isControlDown() && keyEvent.getKeyCode() == KeyEvent.VK_T) {
-            // TODO show top 10 dialog
+            List<StatsDb.Entry> top10 = statsDb.getTop10();
+            if (top10.isEmpty()) {
+                getMessageUtil().info("No statistics data yet!");
+                return true;
+            }
+            new Top10Dialog(statsDb, top10).setVisible(true);
             return true;
         }
 
         return false;
+    }
+
+    private MessageUtil getMessageUtil() {
+        if (messageUtil == null) {
+            messageUtil = new MessageUtil(MainWindow.getInstance(), log);
+        }
+        return messageUtil;
     }
 }
