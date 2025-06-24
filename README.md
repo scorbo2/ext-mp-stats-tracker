@@ -18,7 +18,7 @@ mvn package
 You can then copy the extension jar file to wherever you keep your musicplayer extensions:
 
 ```shell
-cp target/ext-mp-stats-tracker-2.5.0-jar-with-dependencies.jar ~/.MusicPlayer/extensions
+cp target/ext-mp-stats-tracker-2.6.0.jar ~/.MusicPlayer/extensions
 ```
 
 Then restart musicplayer and you should find an option to view the statistics dialog:
@@ -27,7 +27,7 @@ TODO add screenshots and additional usage information.
 
 ### Requirements
 
-MusicPlayer 2.5 or higher.
+MusicPlayer 2.6 or higher.
 
 ### License
 

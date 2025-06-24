@@ -30,7 +30,7 @@ public class StatsDb {
     private File dbFile;
 
     public StatsDb() {
-        this(Version.APP_HOME);
+        this(Version.APPLICATION_DIR);
     }
 
     /**
