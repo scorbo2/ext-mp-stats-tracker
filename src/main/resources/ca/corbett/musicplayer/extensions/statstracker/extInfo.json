@@ -1,9 +1,9 @@
 {
   "name": "Stats tracker",
   "author": "steve@corbett.ca",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "targetAppName": "MusicPlayer",
-  "targetAppVersion": "2.7",
+  "targetAppVersion": "2.8",
   "shortDescription": "Keeps track of statistics for tracks played",
   "longDescription": "Hit Ctrl+T to check out the statistics dialog to see which tracks you play the most frequently!",
   "customFields": {
