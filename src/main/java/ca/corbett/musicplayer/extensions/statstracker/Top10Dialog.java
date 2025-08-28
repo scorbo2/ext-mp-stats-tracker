@@ -35,7 +35,7 @@ public class Top10Dialog extends JDialog {
 
         int place = 1;
         for (StatsDb.Entry entry : top10) {
-            panel.addFormField(new LabelField(place + ":",
+            panel.add(new LabelField(place + ":",
                                               entry.trackFile.getAbsolutePath()
                                                   + " (" + entry.playCount + ")"));
             place++;
@@ -56,9 +56,7 @@ public class Top10Dialog extends JDialog {
             }
         });
         container.add(button);
-        panel.addFormField(panelField);
-
-        panel.render();
+        panel.add(panelField);
         setLayout(new BorderLayout());
         add(PropertiesDialog.buildScrollPane(panel), BorderLayout.CENTER);
     }
