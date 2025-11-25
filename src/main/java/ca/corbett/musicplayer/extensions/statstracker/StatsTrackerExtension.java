@@ -34,6 +34,10 @@ public class StatsTrackerExtension extends MusicPlayerExtension implements Audio
     }
 
     @Override
+    public void loadJarResources() {
+    }
+
+    @Override
     protected List<AbstractProperty> createConfigProperties() {
         return List.of();
     }
