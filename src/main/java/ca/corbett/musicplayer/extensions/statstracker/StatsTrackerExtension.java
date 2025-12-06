@@ -13,6 +13,12 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * This is an extension for the <A HREF="https://github.com/scorbo2/musicplayer">MusicPlayer application</A>
+ * which logs stats on which tracks are played, so that a stats dialog can be displayed.
+ *
+ * @author <a href="https://github.com/scorbo2">scorbo2</a>
+ */
 public class StatsTrackerExtension extends MusicPlayerExtension implements AudioPanelListener {
     private static final Logger log = Logger.getLogger(StatsTrackerExtension.class.getName());
 
