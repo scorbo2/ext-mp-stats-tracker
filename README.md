@@ -23,7 +23,7 @@ on the "Installed" tab, and hit the "uninstall" button in the top right. It's ju
 ### Option 2: manual download and installation
 
 Alternatively, you can manually download the extension jar: 
-[ext-mp-stats-tracker-3.0.0.jar](http://www.corbett.ca/apps/MusicPlayer/extensions/3.0/ext-mp-stats-tracker-3.0.0.jar)
+[ext-mp-stats-tracker-3.1.0.jar](http://www.corbett.ca/apps/MusicPlayer/extensions/3.1/ext-mp-stats-tracker-3.1.0.jar)
 
 Then save it in your ~/.MusicPlayer/extensions directory and restart the application.
 
@@ -34,10 +34,10 @@ You can clone this repo and build the extension jar with maven (Java 17 or highe
 ```shell
 git clone https://github.com/scorbo2/ext-mp-stats-tracker.git
 cd ext-mp-stats-tracker
-mvn package
+mvn package # NOTE! You must have MusicPlayer-3.1 in your local maven repository for this to work!
 
 # Copy the result to the extensions directory:
-cp target/ext-mp-stats-tracker-3.0.0.jar ~/.MusicPlayer/extensions
+cp target/ext-mp-stats-tracker-3.1.0.jar ~/.MusicPlayer/extensions
 ```
 ## Okay, it's installed, how do I use it?
 
@@ -51,7 +51,7 @@ This shows you a list of your top 10 most listened-to tracks, along with the tot
 
 ### Requirements
 
-MusicPlayer 3.0 or higher.
+MusicPlayer 3.1 or higher.
 
 ### License
 
