@@ -1,6 +1,6 @@
 package ca.corbett.musicplayer.extensions.statstracker;
 
-import ca.corbett.extras.properties.PropertiesDialog;
+import ca.corbett.extras.ScrollUtil;
 import ca.corbett.forms.FormPanel;
 import ca.corbett.forms.fields.LabelField;
 import ca.corbett.forms.fields.PanelField;
@@ -58,6 +58,6 @@ public class Top10Dialog extends JDialog {
         container.add(button);
         panel.add(panelField);
         setLayout(new BorderLayout());
-        add(PropertiesDialog.buildScrollPane(panel), BorderLayout.CENTER);
+        add(ScrollUtil.buildScrollPane(panel), BorderLayout.CENTER);
     }
 }

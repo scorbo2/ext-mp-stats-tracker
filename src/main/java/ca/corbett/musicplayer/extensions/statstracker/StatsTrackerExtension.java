@@ -1,15 +1,19 @@
 package ca.corbett.musicplayer.extensions.statstracker;
 
 import ca.corbett.extensions.AppExtensionInfo;
+import ca.corbett.extras.EnhancedAction;
 import ca.corbett.extras.MessageUtil;
+import ca.corbett.extras.io.KeyStrokeManager;
 import ca.corbett.extras.properties.AbstractProperty;
+import ca.corbett.extras.properties.KeyStrokeProperty;
 import ca.corbett.musicplayer.extensions.MusicPlayerExtension;
 import ca.corbett.musicplayer.ui.AudioPanel;
 import ca.corbett.musicplayer.ui.AudioPanelListener;
 import ca.corbett.musicplayer.ui.MainWindow;
 import ca.corbett.musicplayer.ui.VisualizationTrackInfo;
 
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -45,7 +49,13 @@ public class StatsTrackerExtension extends MusicPlayerExtension implements Audio
 
     @Override
     protected List<AbstractProperty> createConfigProperties() {
-        return List.of();
+        List<AbstractProperty> props = new ArrayList<>();
+        props.add(new KeyStrokeProperty("Statistics.options.viewStatsKey",
+                                        "View statistics:",
+                                        KeyStrokeManager.parseKeyStroke("Ctrl+T"),
+                                        new LaunchDialogAction())
+                      .setExposed(false)); // not user-configurable
+        return props;
     }
 
     @Override
@@ -73,25 +83,27 @@ public class StatsTrackerExtension extends MusicPlayerExtension implements Audio
     public void audioLoaded(AudioPanel sourcePanel, VisualizationTrackInfo trackInfo) {
     }
 
-    @Override
-    public boolean handleKeyEvent(KeyEvent keyEvent) {
-        if (keyEvent.isControlDown() && keyEvent.getKeyCode() == KeyEvent.VK_T) {
-            List<StatsDb.Entry> top10 = statsDb.getTop10();
-            if (top10.isEmpty()) {
-                getMessageUtil().info("No statistics data yet!");
-                return true;
-            }
-            new Top10Dialog(statsDb, top10).setVisible(true);
-            return true;
-        }
-
-        return false;
-    }
-
     private MessageUtil getMessageUtil() {
         if (messageUtil == null) {
             messageUtil = new MessageUtil(MainWindow.getInstance(), log);
         }
         return messageUtil;
+    }
+
+    private class LaunchDialogAction extends EnhancedAction {
+
+        public LaunchDialogAction() {
+            super("View your listening stats");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            List<StatsDb.Entry> top10 = statsDb.getTop10();
+            if (top10.isEmpty()) {
+                getMessageUtil().info("No statistics data yet!");
+                return;
+            }
+            new Top10Dialog(statsDb, top10).setVisible(true);
+        }
     }
 }
